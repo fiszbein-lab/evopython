@@ -111,7 +111,7 @@ centering, such that the whole feature is padded.
 > - A new, padded `Feature` instance.
 ----
 ### *class* `evopython.maf.MAF`
-> Initializes a MAF instance.
+> A resolver for multiple alignment formatted whole-genome alignment data.
 >
 > *Arguments:*
 > - `maf_dir`: The path to a directory of MAF files, each following the 
