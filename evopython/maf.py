@@ -1,6 +1,7 @@
 import glob
 import os
 import re
+import warnings
 
 from collections import defaultdict
 
@@ -109,7 +110,7 @@ class MAF:
 
                 if rev_comp:
                     seq = _reverse_complement(seq)
-                    strand = "+" if strand == "-" else "+"
+                    strand = "+" if strand == "-" else "-"
 
                 if strand == "+":
                     # The number of bases preceding the feature alignment is
@@ -131,7 +132,7 @@ class MAF:
             # when both `match_strand` is True and the feature is has a reverse
             # orientation.
             if match_strand and feat.is_reverse:
-                for species, seq in alignment.items():
+                for species, (*_, seq) in alignment.items():
                     alignment[species] = _reverse_complement(seq)
 
             alignments.append(alignment)
@@ -191,9 +192,12 @@ class MAF:
 
             try:
                 search = list(maf_index.search([search_start], [search_end]))
-            except ValueError as err:
-                message = "Found a record with incorrect offset."
-                raise Exception(message) from err
+            except ValueError:
+                message = (
+                    f"Incorrect offset found while attempting to resolve " 
+                    f"{feat.locus(strand=True)} — skipping.")
+                warnings.warn(message)
+                continue
 
             b = 0
             for alignment in search:
@@ -234,22 +238,21 @@ class MAF:
             for b in overlap:
                 chrom, start, end, strand, _ = overlap[b][self._aligned_on]
 
-                if b in (0, N-1):
-                    if feat.start > start:
-                        start = feat.start
-                    else:
-                        # In these cases, the feature began before the
-                        # alignment, so we use the overlapping alignment's
-                        # start, i.e., no update is needed.
-                        pass
+                if feat.start > start:
+                    start = feat.start
+                else:
+                    # In these cases, the feature began before the
+                    # alignment, so we use the overlapping alignment's
+                    # start, i.e., no update is needed.
+                    pass
 
-                    if feat.end < end:
-                        end = feat.end
-                    else:
-                        # In these cases, the feature ended after the
-                        # alignment, so we use the overlapping alignment's end,
-                        # i.e., no update is needed.
-                        pass
+                if feat.end < end:
+                    end = feat.end
+                else:
+                    # In these cases, the feature ended after the
+                    # alignment, so we use the overlapping alignment's end,
+                    # i.e., no update is needed.
+                    pass
 
                 yield Feature(chrom, start, end, feat.strand), overlap[b]
 

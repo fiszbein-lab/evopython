@@ -34,7 +34,7 @@ class Feature:
             base: The coordinate system to use, 0 or 1, where the former is
                 half-open on the end and the latter fully closed.
             strand: A bool expressing whether to include the strand at the end
-                of the locus; 1 is used for forward and -1 for reverse.
+                of the locus; 1 is used for forward and 0 for reverse.
 
         Raises:
             ValueError: An invalid base was given.

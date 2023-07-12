@@ -70,7 +70,7 @@ directory.
 > - `gtf`: The GTF file path.
 > - `types`: The feature types to parse.
 ----
-### *class* `evopython.gtf.BED(bed: str, on_name: bool = False)`
+### *class* `evopython.bed.BED(bed: str, on_name: bool = False)`
 > A dictionary-like data structure for feature representation.
 > 
 > *Arguments*:
@@ -81,18 +81,31 @@ used as keys to the features.
 ### *class* `evopython.feature.Feature`
 > A stranded, genomic feature.
 >
-> *Attributes*:
+> ### Attributes:
 > - `chrom`: The chromosome name.
 > - `start`: The forward-mapped, 0-based, inclusive starting coordinate.
 > - `end`: The forward-mapped, 0-based, exclusive ending coordinate.
 > - `strand`: The strand, plus or minus for forward or reverse.
-> 
-> *Instance Properties*:
+> ----
+> ### Instance properties:
 > - `is_forward`: A bool expressing forward strand orientation.
 > - `is_reverse`: A bool expressing reverse strand orientation.
+> ----
+> ### Methods:
 > 
-> *Methods*:
+> `locus(self, base: int = 0, strand: bool = False)`
 > 
+> Returns the locus in a generic genome browser format.
+> 
+> *Arguments*:
+> - `base`: The coordinate system to use, 0 or 1, where the former is
+> half-open on the end and the latter fully closed.
+> - `strand`: A bool expressing whether to include the strand at the end
+> of the locus; 1 is used for forward and 0 for reverse.
+>
+> *Raises*:
+> - ValueError: An invalid base was given.
+> ----
 > `pad(self, pad5: int, pad3: int, center: int = 0)`
 > 
 > Positive padding is tanatamount to feature extension and negative 
@@ -113,12 +126,12 @@ centering, such that the whole feature is padded.
 ### *class* `evopython.maf.MAF`
 > A resolver for multiple alignment formatted whole-genome alignment data.
 >
-> *Arguments:*
+> *Arguments*:
 > - `maf_dir`: The path to a directory of MAF files, each following the 
 naming scheme `<chromosome>.maf`.
 > - `aligned_on`: The species that the chromosome names correspond to.
 >
-> *Methods:*
+> ### Methods:
 > 
 > `get(self, feat: Feature, match_strand: bool = True)`
 > 
