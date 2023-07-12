@@ -1,6 +1,6 @@
 # evopython
-*evopython* is an object-oriented Python package designed for genome-scale
-feature parsing and subsequent resolution from whole-genome alignment data.
+`evopython` is an object-oriented Python package designed for genome-scale
+feature resolution from whole-genome alignment data.
 
 ## Installation
 `evoython` depends on just 
@@ -21,13 +21,13 @@ be downloaded from their FTP site, indexed
 `evopython` was designed to support a linear, progressive form of analysis:
 1. `GTF` or `BED` classes are initialized with their respective files;
 2. instances of the `Feature` class, a data container for stranded, genomic 
-interval representation, are gathered from the above parser class instances; 
+interval representation, are gathered from the above parser class instance; 
 and
 3. these instances are passed to the `get()` method of an instance of the `MAF` 
 class, a representation of the whole-genome alignment.
 
-For example, the following resolves the HES3 transcription factor's core
-promoter from a multiple whole-genome alignment comprising 10 primate species:
+For example, we could resolve the HES3 transcription factor's core promoter 
+from a multiple whole-genome alignment comprising 10 primate species:
 ```python
 from evopython.gtf import GTF
 from evopython.maf import MAF
@@ -61,13 +61,14 @@ microcebus_murinus   ACATGTAAACGAGGGGCCCCAATAAAGGCGGCACTGACTTGCTGCTTGCGCA
 ```
 For more detailed examples, see the Jupyter notebooks in the *examples*
 directory.
-----
-### *class* `evopython.gtf.GTF(gtf: str, types: tuple = ("gene",))`
+
+# Index
+### *class* `evopython.gtf.GTF(gtf: str, types: list)`
 > A dictionary-like data structure for feature representation.
 > 
 > *Arguments*:
 > - `gtf`: The GTF file path.
-> - `types`: The tuple of feature types to parse.
+> - `types`: The feature types to parse.
 ----
 ### *class* `evopython.gtf.BED(bed: str, on_name: bool = False)`
 > A dictionary-like data structure for feature representation.
