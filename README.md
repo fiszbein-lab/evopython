@@ -62,23 +62,28 @@ microcebus_murinus   ACATGTAAACGAGGGGCCCCAATAAAGGCGGCACTGACTTGCTGCTTGCGCA
 For more detailed examples, see the Jupyter notebooks in the *examples*
 directory.
 
-# Index
-### *class* `evopython.gtf.GTF(gtf: str, types: list)`
-> A dictionary-like data structure for feature representation.
+# Documentation
+### class `evopython.gtf.GTF(gtf: str, types: list)`
+> A nested `dict` mapping gene name to feature name to a list of `Feature`
+> instances; each high-level gene `dict` two additional keys, "attr" and 
+> "feat," with the former mapping to a `dict` with info. such as "gene_biotype" 
+> indicating whether the gene is protein-coding and the latter mapping to the 
+> gene's `Feature` instance.
 > 
 > *Arguments*:
 > - `gtf`: The GTF file path.
 > - `types`: The feature types to parse.
 ----
-### *class* `evopython.bed.BED(bed: str, on_name: bool = False)`
-> A dictionary-like data structure for feature representation.
+### class `evopython.bed.BED(bed: str, on_name: bool = False)`
+> A `dict` mapping locus `tuple` or name value to `Feature` instance; in the 
+> former case, loci have the form `(seqname, start, end, strand)`.
 > 
 > *Arguments*:
 > - `bed`: The BED file path.
-> - `on_name`: A bool expressing whether name field values should be 
+> - `on_name`: A `bool` expressing whether name field values should be 
 used as keys to the features.
 ----
-### *class* `evopython.feature.Feature`
+### class `evopython.feature.Feature`
 > A stranded, genomic feature.
 >
 > ### Attributes:
@@ -88,8 +93,8 @@ used as keys to the features.
 > - `strand`: The strand, plus or minus for forward or reverse.
 > ----
 > ### Instance properties:
-> - `is_forward`: A bool expressing forward strand orientation.
-> - `is_reverse`: A bool expressing reverse strand orientation.
+> - `is_forward`: A `bool` expressing forward strand orientation.
+> - `is_reverse`: A `bool` expressing reverse strand orientation.
 > ----
 > ### Methods:
 > 
@@ -100,7 +105,7 @@ used as keys to the features.
 > *Arguments*:
 > - `base`: The coordinate system to use, 0 or 1, where the former is
 > half-open on the end and the latter fully closed.
-> - `strand`: A bool expressing whether to include the strand at the end
+> - `strand`: A `bool` expressing whether to include the strand at the end
 > of the locus; 1 is used for forward and 0 for reverse.
 >
 > *Raises*:
@@ -123,12 +128,12 @@ centering, such that the whole feature is padded.
 > *Returns:*
 > - A new, padded `Feature` instance.
 ----
-### *class* `evopython.maf.MAF`
+### class `evopython.maf.MAF`
 > A resolver for multiple alignment formatted whole-genome alignment data.
 >
 > *Arguments*:
 > - `maf_dir`: The path to a directory of MAF files, each following the 
-naming scheme `<chromosome>.maf`.
+naming scheme *chromosome_name.maf*.
 > - `aligned_on`: The species that the chromosome names correspond to.
 >
 > ### Methods:
