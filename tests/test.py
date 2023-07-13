@@ -6,14 +6,13 @@ import re
 import unittest
 
 import requests
-import tqdm
 
 from evopython.feature import Feature
 from evopython.maf import MAF
 
 
 class TestResolution(unittest.TestCase):
-    # Init. test features and meta-data.
+    # Load test features and meta-data.
     comp_wga = dict()
     comp_feat = collections.defaultdict(list)
 
