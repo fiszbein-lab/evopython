@@ -139,3 +139,20 @@ naming scheme *chromosome_name.maf*.
 > chromosome name; `tuple[1]` the 0-based, inclusive starting coordinate; 
 > `tuple[2]` the 0-based, exclusive ending coordinate; `tuple[3`] the strand, 
 > plus or minus for forward or reverse; and `tuple[4]` the alignment.
+
+# Testing
+
+To test feature resolution,
+1. clone the repository with git clone 
+`git clone https://github.com/fiszbein-lab/evopython`,
+2. download the MAF files into their respective directories using the 
+provided FTP links; and
+3. run the test from the command line with `python -m unittest tests/test.py`.
+
+The test features have been pre-generated, but new features can be created
+using the `features.py` command-line tool
+```pycon
+python features.py --maf path/to/maf --aligned-on species_name
+```
+where `--aligned-on` is the species that the files are indexed on. A text file,
+**features.txt**, will be written in the same directory as the MAF file.
