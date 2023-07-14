@@ -24,6 +24,7 @@ be downloaded from their FTP site, indexed
 `Feature` class; and
 3. these `Feature` instances are resolved from whole-genome alignment MAF
 files, represented with the `MAF` class.
+
 For example, we could resolve the HES3 transcription factor's core promoter 
 from a multiple whole-genome alignment comprising 10 primate species.
 
