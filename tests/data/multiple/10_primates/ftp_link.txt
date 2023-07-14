@@ -1,0 +1,1 @@
+https://ftp.ensembl.org/pub/release-109/maf/ensembl-compara/multiple_alignments/10_primates.epo/10_primates.epo.1_1.maf.gz

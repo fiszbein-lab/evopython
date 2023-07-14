@@ -1,0 +1,1 @@
+https://ftp.ensembl.org/pub/release-109/maf/ensembl-compara/multiple_alignments/21_murinae.epo/21_murinae.epo.X_1.maf.gz

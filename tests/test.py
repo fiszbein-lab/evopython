@@ -12,7 +12,6 @@ from evopython.maf import MAF
 
 
 class TestResolution(unittest.TestCase):
-    # Load test features and meta-data.
     comp_wga = dict()
     comp_feat = collections.defaultdict(list)
 
@@ -47,12 +46,6 @@ class TestResolution(unittest.TestCase):
         }
 
     def test_resolution(self):
-        """Tests feature resolution.
-
-        To pass, our resolution must, one, report the species reported in the
-        fetched Ensembl alignment; two, match the alignment's (base-corrected)
-        coordinates; and three, match the alignment.
-        """
         for comp in self.comp_wga:
             print(comp)
 
@@ -60,8 +53,6 @@ class TestResolution(unittest.TestCase):
             wga = self.comp_wga[comp]['wga']
 
             for feat in self.comp_feat[comp]:
-                print("-", feat.locus(base=1))
-
                 our_alignment = wga.get(feat, match_strand=False)
                 ens_alignment = _fetch(feat, on, against, method)
 
@@ -75,9 +66,9 @@ class TestResolution(unittest.TestCase):
 
                         if set(our_seq) == {"-"}:
                             # The API won't return species if the whole
-                            # sequence is gapped, but we do, so the `assertIn`
-                            # below fails. I skip these cases as they don't
-                            # reflect failed resolution.
+                            # sequence is gapped but we do, so the `assertIn`
+                            # below fails; these cases don't reflect failed
+                            # resolution, so I skip them.
                             continue
 
                         if species in ens_alignment:
@@ -87,7 +78,12 @@ class TestResolution(unittest.TestCase):
                             ens_seq = ens_alignment[species][locus]
                             self.assertEqual(our_seq, ens_seq)
                         else:
-                            print("> 🤔")
+                            # Podarcis muralis is missing from the
+                            # 24:4996761-4996769 alignment in 17 sauropsids
+                            # fetched from Ensembl, but I checked it in the
+                            # browser, and our resolution is right — so not
+                            # sure why the API doesn't retun that species.
+                            continue
 
 
 def _fetch(
@@ -96,7 +92,7 @@ def _fetch(
     against: str,
     method: str = "LASTZ_NET"
 ) -> dict[str: dict]:
-    """Fetches an alignment from the Ensembl Compara REST API.
+    """Fetches an alignment from the Ensembl REST API.
 
     Args:
         feat: The feature to fetch an alignment for.
@@ -149,8 +145,8 @@ def _unpack_alignment(alignment: dict[str: str | int]) -> tuple:
     Returns:
         A tuple, where tuple[0] is the species name; tuple[1] the chromosome;
         tuple[2] the 0-based, inclusive starting coordinate; tuple[3] the
-        0-based, exclusive ending coordinate; tuple[4] is the integer strand;
-        and tuple[5] is the sequence.
+        0-based, exclusive ending coordinate; tuple[4] is the strand, plus or
+        minus for forward or reverse; and tuple[5] the sequence.
     """
     return (
         alignment['species'],

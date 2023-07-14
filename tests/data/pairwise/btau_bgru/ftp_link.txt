@@ -1,0 +1,1 @@
+https://ftp.ensembl.org/pub/release-109/maf/ensembl-compara/pairwise_alignments/btau_ars-ucd1.2.v.bgru_lu_bosgru_v3.0.lastz_net.tar.gz

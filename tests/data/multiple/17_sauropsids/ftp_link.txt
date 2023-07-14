@@ -1,0 +1,1 @@
+https://ftp.ensembl.org/pub/release-109/maf/ensembl-compara/multiple_alignments/17_sauropsids.epo/17_sauropsids.epo.24_1.maf.gz

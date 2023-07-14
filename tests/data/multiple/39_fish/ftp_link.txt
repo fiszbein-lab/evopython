@@ -1,0 +1,1 @@
+https://ftp.ensembl.org/pub/release-109/maf/ensembl-compara/multiple_alignments/39_fish.epo/39_fish.epo.18_1.maf.gz

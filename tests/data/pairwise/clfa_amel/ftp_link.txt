@@ -1,0 +1,1 @@
+https://ftp.ensembl.org/pub/release-109/maf/ensembl-compara/pairwise_alignments/clfa_ros_cfam_1.0.v.amel_asm200744v2.lastz_net.tar.gz

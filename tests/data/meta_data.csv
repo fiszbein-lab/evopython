@@ -1,0 +1,11 @@
+name,aligned_on,aligned_against,method
+10_primates,homo_sapiens,primates,EPO
+17_sauropsids,gallus_gallus,sauropsids,EPO
+21_murinae,mus_musculus,murinae,EPO
+39_fish,oryzias_latipes,fish,EPO
+43_mammals,homo_sapiens,mammals,EPO
+btau_bgru,bos_taurus,bos_grunniens,LASTZ_NET
+clfa_amel,canis_lupus_familiaris,ailuropoda_melanoleuca,LASTZ_NET
+drer_bspl,danio_rerio,betta_splendens,LASTZ_NET
+hsap_ppan,homo_sapiens,pan_paniscus,LASTZ_NET
+mmus_rnor,mus_musculus,rattus_norvegicus,LASTZ_NET
