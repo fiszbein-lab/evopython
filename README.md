@@ -18,16 +18,16 @@ annotation [GTF](https://genome.ucsc.edu/FAQ/FAQformat.html#format4) files can
 be downloaded from their FTP site, indexed 
 [here](https://useast.ensembl.org/info/data/ftp/index.html).
 
-`evopython` was designed to support a linear, progressive form of analysis:
-1. `GTF` or `BED` classes are initialized with their respective files;
-2. instances of the `Feature` class, a data container for stranded, genomic 
-interval representation, are gathered from the above parser class instance; 
-and
-3. these instances are passed to the `get()` method of an instance of the `MAF` 
-class, a representation of the whole-genome alignment.
-
+`evopython` was designed to support a pipelined analysis, where
+1. `GTF` or `BED` instances are initialized with their respective files;
+2. these dictionary-like data structures are queried for instances of the
+`Feature` class; and
+3. these `Feature` instances are resolved from whole-genome alignment MAF
+files, represented with the `MAF` class.
 For example, we could resolve the HES3 transcription factor's core promoter 
-from a multiple whole-genome alignment comprising 10 primate species:
+from a multiple whole-genome alignment comprising 10 primate species.
+
+So in general, we have analyses of the form:  
 ```python
 from evopython.gtf import GTF
 from evopython.maf import MAF
@@ -35,40 +35,29 @@ from evopython.maf import MAF
 genes = GTF("path/to/genes")
 wga = MAF("path/to/wga", aligned_on="homo_sapiens")
 
-HES3_gene = genes['HES3']['feature']
-HES3_prom = HES3_gene.pad(center=5, pad5=50, pad3=0)
-
-alignments = wga.get(HES3_prom)
-
-if len(alignments) == 1:  # The alignment is contiguous.
-    alignment, = alignments
+for gene_name in genes:
+    feat = genes[gene_name]['feat']
+    alignment = wga.get(feat)
     
-    for species in alignment:
-        *pos, seq = alignment[species]
-        print("{: <20}".format(species), seq)
+    if len(alignment) == 1:
+        # The alignment is contiguous; do something.
+        pass
+    else:
+        # The alignment is not contiguous; do something else:
+        pass
 ```
-```
-homo_sapiens         ACATGTAAACGAGGGT-CCCTATAAAGGCGGCGCTGCCTCGC-ACTGGTGCA
-pan_paniscus         ACATGTAAACGAGGGT-CCCTATAAAGGCGGCGCTGCCTCGC-ACTGGTGCA
-pan_troglodytes      ACATGTAAACGAGGGT-CCCTATAAAGGCGGCGCTGCCTCGC-ACTGGTGCA
-gorilla_gorilla      ACATGTAAACAAGGGT-CCCTATAAAGGCGGCGCTGCCTCGC-ACTGGTGCA
-pongo_abelii         ACATGTAAACGAGGGT-CCCTATAAAGGCGGCGCTGCCTCGC-ACTGGTGCA
-nomascus_leucogenys  ACATGTAAACGAGGGT-CCCTATAAAGGCGGCGCTGCCTCGC-ACTGGCACA
-chlorocebus_sabaeus  ACATGTAAACGAGGGT-CCCTATAAAGGCAGCACTGCCTCAC-ACTGGTGCA
-macaca_fascicularis  ACATGTAAACGAGGGT-CCCTATAAAGGCAGCACTGCCTCAC-ACTGGTGCA
-macaca_mulatta       ACATGTAAACGAGGGT-CCCTATAAAGGCAGCACTGCCTCAC-ACTGGTGCA
-microcebus_murinus   ACATGTAAACGAGGGGCCCCAATAAAGGCGGCACTGACTTGCTGCTTGCGCA
-```
-For more detailed examples, see the Jupyter notebooks in the *examples*
-directory.
+We can parse any feature type in the GTF (see the `GTF` class description 
+below) and further generate derived, secondary features with `Feature` class's 
+pad method (see the `Feature` class description below). For detailed examples, 
+see the  Jupyter notebooks in the *examples* directory.
 
 # Documentation
 ### class `evopython.gtf.GTF(gtf: str, types: list)`
 > A nested `dict` mapping gene name to feature name to a list of `Feature`
-> instances; each high-level gene `dict` two additional keys, "attr" and 
-> "feat," with the former mapping to a `dict` with info. such as "gene_biotype" 
-> indicating whether the gene is protein-coding and the latter mapping to the 
-> gene's `Feature` instance.
+> instances; each high-level gene `dict` has two additional keys, "attr" and 
+> "feat," with the former mapping to a `dict` with information such as 
+> "gene_biotype" indicating whether the gene is protein-coding and the latter 
+> mapping to the gene's `Feature` instance.
 > 
 > *Arguments*:
 > - `gtf`: The GTF file path.
@@ -109,7 +98,7 @@ used as keys to the features.
 > of the locus; 1 is used for forward and 0 for reverse.
 >
 > *Raises*:
-> - ValueError: An invalid base was given.
+> - `ValueError`: An invalid base was given.
 > ----
 > `pad(self, pad5: int, pad3: int, center: int = 0)`
 > 
@@ -152,4 +141,3 @@ naming scheme *chromosome_name.maf*.
 > chromosome name; `tuple[1]` the 0-based, inclusive starting coordinate; 
 > `tuple[2]` the 0-based, exclusive ending coordinate; `tuple[3`] the strand, 
 > plus or minus for forward or reverse; and `tuple[4]` the alignment.
-> 
