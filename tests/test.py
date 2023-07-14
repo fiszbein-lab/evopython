@@ -7,8 +7,7 @@ import unittest
 
 import requests
 
-from evopython.feature import Feature
-from evopython.maf import MAF
+from evopython import Feature, MAF
 
 
 class TestResolution(unittest.TestCase):

@@ -33,8 +33,8 @@ files, represented with the `MAF` class.
 
 In general, we have analyses of the form:
 ```python
-from evopython.gtf import GTF
-from evopython.maf import MAF
+from evopython import GTF
+from evopython import MAF
 
 genes = GTF("path/to/genes")
 wga = MAF("path/to/wga", aligned_on="species_name")
@@ -59,7 +59,7 @@ For specific usage examples, see the Jupyter notebooks in the **examples**
 directory.
 
 ## Documentation
-### class `evopython.gtf.GTF(gtf: str, types: list)`
+### class `evopython.GTF(gtf: str, types: list)`
 > A nested `dict` mapping gene name to feature name to a list of `Feature`
 > instances; each high-level gene `dict` has two additional keys, "attr" and 
 > "feat," with the former mapping to a `dict` with information such as 
@@ -70,7 +70,7 @@ directory.
 > - `gtf`: The GTF file path.
 > - `types`: The feature types to parse.
 ----
-### class `evopython.bed.BED(bed: str, on_name: bool = False)`
+### class `evopython.BED(bed: str, on_name: bool = False)`
 > A `dict` mapping locus `tuple` or name value to `Feature` instance; in the 
 > former case, loci have the form `(seqname, start, end, strand)`.
 > 
@@ -79,7 +79,7 @@ directory.
 > - `on_name`: A `bool` expressing whether name field values should be 
 used as keys to the features.
 ----
-### class `evopython.feature.Feature`
+### class `evopython.Feature`
 > A stranded, genomic feature.
 >
 > ### Attributes:
@@ -124,7 +124,7 @@ centering, such that the whole feature is padded.
 > *Returns:*
 > - A new, padded `Feature` instance.
 ----
-### class `evopython.maf.MAF`
+### class `evopython.MAF`
 > A resolver for multiple alignment formatted whole-genome alignment data.
 >
 > *Arguments*:
