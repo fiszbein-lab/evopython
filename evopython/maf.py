@@ -80,11 +80,9 @@ class MAF:
                 forward strand.
 
         Returns:
-            A list of dicts mapping species to tuple, where tuple[0] is the
-            chromosome name; tuple[1] the 0-based, inclusive starting
-            coordinate; tuple[2] the 0-based, exclusive ending coordinate;
-            tuple[3] the strand, plus or minus for forward or reverse; and
-            tuple[4] the alignment.
+            A list of dicts mapping species to tuple, where tuple[0] is
+            a `Feature` instance describing the alignment position and
+            orientation tuple[1] the aligned sequence.
         """
         alignments = list()
         search_result = self._search(feat=feat)
@@ -119,20 +117,21 @@ class MAF:
                 else:
                     # The number of bases after the feature alignment, e.g.,
                     # the number of bases preceding the true start coordinate
-                    # on the forward strand, is how much we need to shift the
-                    # starting coordinate.
+                    # on the forward strand (given our sequence is the forward
+                    # strand's reverse complement), is how much we need to
+                    # shift the starting coordinate.
                     start += _count_bases(seq[N+1:])
 
                 seq = seq[M:N+1]
                 end = start + _count_bases(seq)
 
-                alignment[species] = chrom, start, end, strand, seq
+                alignment[species] = Feature(chrom, start, end, strand), seq
 
             # The default is to forward-map the alignment, so we update only
-            # when both `match_strand` is True and the feature is has a reverse
-            # orientation.
+            # when both `match_strand` is True and the feature has a reverse-
+            # stranded orientation.
             if match_strand and feat.is_reverse:
-                for species, (*_, seq) in alignment.items():
+                for species, (_, seq) in alignment.items():
                     alignment[species] = _reverse_complement(seq)
 
             alignments.append(alignment)
@@ -157,13 +156,15 @@ class MAF:
 
         Yields:
             A tuple, where tuple[0] is the feature and tuple[1] a dict mapping
-            species to alignment; the feature is returned back because in cases
-            where the original does not have a contiguous alignment, it's
-            adjusted to achieve contiguity.
+            species to alignment; the feature is returned back to handle cases
+            where the original does not have a contiguous alignment and had to
+            be adjusted to achieve contiguity.
 
         Raises:
             KeyError: The feature lies on a chromosome with no matching MAF
                 file in the specified directory.
+
+        Warns:
             ValueError: MafIO.MafIndex.search found an overlapping record with
                 incorrect offset.
 
@@ -241,17 +242,15 @@ class MAF:
                 if feat.start > start:
                     start = feat.start
                 else:
-                    # In these cases, the feature began before the
-                    # alignment, so we use the overlapping alignment's
-                    # start, i.e., no update is needed.
+                    # In these cases, the feature began before the alignment,
+                    # so we use the overlapping alignment's start.
                     pass
 
                 if feat.end < end:
                     end = feat.end
                 else:
-                    # In these cases, the feature ended after the
-                    # alignment, so we use the overlapping alignment's end,
-                    # i.e., no update is needed.
+                    # In these cases, the feature ended after the alignment, so
+                    # we use the overlapping alignment's end.
                     pass
 
                 yield Feature(chrom, start, end, feat.strand), overlap[b]
