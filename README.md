@@ -37,7 +37,7 @@ from evopython.gtf import GTF
 from evopython.maf import MAF
 
 genes = GTF("path/to/genes")
-wga = MAF("path/to/wga", aligned_on="homo_sapiens")
+wga = MAF("path/to/wga", aligned_on="species_name")
 
 for gene_name in genes:
     feat = genes[gene_name]['feat']
@@ -47,7 +47,7 @@ for gene_name in genes:
         # The alignment is contiguous; do something.
         pass
     else:
-        # The alignment is not contiguous; do something else.
+        # The alignment is discontiguous; do something else.
         pass
 ```
 We can parse any feature type in the GTF (see the `GTF` class description 
@@ -146,7 +146,7 @@ naming scheme *chromosome_name.maf*.
 > *Returns:*
 > - A list of dictionaries mapping species to `tuple`, where `tuple[0]` is the 
 > chromosome name; `tuple[1]` the 0-based, inclusive starting coordinate; 
-> `tuple[2]` the 0-based, exclusive ending coordinate; `tuple[3`] the strand, 
+> `tuple[2]` the 0-based, exclusive ending coordinate; `tuple[3]` the strand, 
 > plus or minus for forward or reverse; and `tuple[4]` the alignment.
 
 ## Testing
