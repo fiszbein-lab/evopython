@@ -25,9 +25,6 @@ be downloaded from their FTP site, indexed
 3. these `Feature` instances are resolved from whole-genome alignment MAF
 files, represented with the `MAF` class.
 
-For example, we could resolve the HES3 transcription factor's core promoter 
-from a multiple whole-genome alignment comprising 10 primate species.
-
 So in general, we have analyses of the form:  
 ```python
 from evopython.gtf import GTF
