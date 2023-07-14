@@ -276,7 +276,7 @@ def _get_base_index(base_number: int, alignment: str) -> int:
     """Finds the index of the Nth base in an alignment.
 
     Notes:
-        The valid bases are the IUPAC codes.
+        The valid bases are all IUPAC codes except periods.
 
     Args:
         base_number: The base number to index.
@@ -328,7 +328,7 @@ def _reverse_complement(seq: str) -> str:
     """Reverse complements a sequence.
 
     Notes:
-        The valid bases are the IUPAC codes, as well as dashes.
+        The valid bases are all IUPAC codes except periods.
 
     Args:
         seq: The sequence to reverse complement.
@@ -340,7 +340,7 @@ def _reverse_complement(seq: str) -> str:
 
 
 def _unpack_record(record: SeqRecord) -> tuple:
-    """Unpacks needed Bio.SeqIO.SeqRecord information.
+    """Unpacks relevant Bio.SeqIO.SeqRecord information.
 
     Args:
         record: The Bio.SeqIO.SeqRecord instance to unpack.
@@ -352,9 +352,9 @@ def _unpack_record(record: SeqRecord) -> tuple:
             tuple[2] is the 0-based, inclusive starting coordinate;
             tuple[3] is the 0-based, exclusive ending coordinate;
             tuple[4] is the strnd, plus or minus for forward or reverse;
-            tuple[4] is the size of the sequence;
-            tuple[5] is the source chromosome size; and
-            tuple[6] is the alignment.
+            tuple[5] is the size of the sequence;
+            tuple[6] is the source chromosome size; and
+            tuple[7] is the alignment.
     """
     species, chrom = record.id.split(".", maxsplit=1)
     chrom_size = record.annotations['srcSize']

@@ -48,7 +48,6 @@ class Feature:
                 raise ValueError(f"`base` must be in 0 or 1 — got {base}.")
 
         locus = f"{self.chrom}:{start}-{self.end}"
-
         if strand:
             locus += ":1" if self.is_forward else ":0"
 

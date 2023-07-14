@@ -148,7 +148,7 @@ naming scheme *chromosome_name.maf*.
 > feature's strand; if `False`, the alignment is mapped to the forward strand.
 >
 > *Returns:*
-> - A list of dicts mapping species to tuple, where `tuple[0]` is the 
+> - A list of dictionaries mapping species to `tuple`, where `tuple[0]` is the 
 > chromosome name; `tuple[1]` the 0-based, inclusive starting coordinate; 
 > `tuple[2]` the 0-based, exclusive ending coordinate; `tuple[3`] the strand, 
 > plus or minus for forward or reverse; and `tuple[4]` the alignment.
