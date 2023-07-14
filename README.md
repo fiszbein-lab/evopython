@@ -1,6 +1,11 @@
 # evopython
 `evopython` is an object-oriented Python package designed for genome-scale
 feature resolution from whole-genome alignment data.
+- [Installation](#installation)
+- [Usage](#usage)
+- [Documenation](#documentation)
+- [Testing](#testing)
+---
 
 ## Installation
 `evoython` depends on just 
@@ -53,7 +58,7 @@ constraints on the features we can query alignments for.
 For specific usage examples, see the Jupyter notebooks in the **examples** 
 directory.
 
-# Documentation
+## Documentation
 ### class `evopython.gtf.GTF(gtf: str, types: list)`
 > A nested `dict` mapping gene name to feature name to a list of `Feature`
 > instances; each high-level gene `dict` has two additional keys, "attr" and 
@@ -144,7 +149,7 @@ naming scheme *chromosome_name.maf*.
 > `tuple[2]` the 0-based, exclusive ending coordinate; `tuple[3`] the strand, 
 > plus or minus for forward or reverse; and `tuple[4]` the alignment.
 
-# Testing
+## Testing
 
 To test feature resolution,
 1. clone the repository with
@@ -159,4 +164,5 @@ with the `features.py` command-line script
 python features.py --maf path/to/maf --aligned-on species_name
 ```
 where `--aligned-on` is the name of the species that the files are indexed on; 
-atext file, **features.txt**, will be written in the same directory as the MAF file.
+a text file, **features.txt**, will be written in the same directory as the 
+MAF file.
