@@ -6,7 +6,7 @@ with open("README.md", 'r') as f:
 setup(
   name="evopython",
   packages=["evopython"],
-  version="1.0.0",
+  version="0.0.1",
   license="bsd-2-clause",
   description="Feature resolution from whole-genome alignment data.",
   long_description=long_description,
@@ -14,7 +14,7 @@ setup(
   author="Steven Mick",
   author_email="smick@bu.edu",
   url="https://github.com/fiszbein-lab/evopython",
-  download_url="https://github.com/user/reponame/archive/v_01.tar.gz",  # todo
+  download_url="https://github.com/user/reponame/archive/v_01.tar.gz",
   keywords=["comparative genomics", "evopython"],
   python_requires=">=3.10.8",
   install_requires=["biopython"],

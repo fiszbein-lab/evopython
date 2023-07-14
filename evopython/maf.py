@@ -178,8 +178,8 @@ class MAF:
             maf_index = self._maf_index[feat.chrom]
         except KeyError as err:
             message = (
-                f"{feat.locus()} is on {feat.chrom}, but {feat.chrom}.maf was "
-                f"not found in {self._maf_dir}.")
+                f"{feat.locus()} is on chromosome {feat.chrom}, but "
+                f"{feat.chrom}.maf was not found in {self._maf_dir}.")
             raise Exception(message) from err
 
         for ref_strand in "+-":

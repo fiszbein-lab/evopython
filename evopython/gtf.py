@@ -5,7 +5,7 @@ from evopython.feature import Feature
 
 
 class GTF(collections.UserDict):
-    def __init__(self, gtf: str, types: list):
+    def __init__(self, gtf: str, types: list = tuple()):
         """Inits. GTF.
 
         Args:
@@ -33,7 +33,7 @@ def _read_gtf(gtf: str, types: list) -> dict[str: dict]:
     featurome = dict()
 
     if "gene" not in types:
-        types.append("gene")
+        types += ("gene",)
 
     with open(gtf, 'r') as f:
         for line in f:
