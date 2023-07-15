@@ -158,6 +158,6 @@ provided FTP links;
 3. generate random test features using the command-line script, 
 `python features.py --maf path/to/maf --aligned-on species_name`, where 
 `aligned_on` is the name of the species the file is indexed on 
-(see `meta_data.csv`); and
+(see `tests/data/meta_data.csv`); and
 4. run the test from the command line with 
 `python -m unittest tests/test_resolution.py`.
