@@ -1,4 +1,6 @@
 # evopython
+[![pypi version](https://img.shields.io/pypi/v/evopython)](https://pypi.org/project/evopython/0.0.1/)
+
 `evopython` is an object-oriented Python package designed for genome-scale
 feature resolution from whole-genome alignment data.
 - [Installation](#installation)
