@@ -14,10 +14,11 @@ setup(
   author="Steven Mick",
   author_email="smick@bu.edu",
   url="https://github.com/fiszbein-lab/evopython",
-  download_url="https://github.com/user/reponame/archive/v_01.tar.gz",
   keywords=["comparative genomics", "evopython"],
   python_requires=">=3.10.8",
-  install_requires=["biopython"],
+  install_requires=[
+    "biopython~=1.81"
+  ],
   classifiers=[
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering :: Bio-Informatics",
