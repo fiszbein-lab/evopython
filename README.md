@@ -28,22 +28,21 @@ where
 1. `GTF` or `BED` instances are initialized with their respective files;
 2. these dictionary-like data structures are queried for instances of the
 `Feature` class; and
-3. these `Feature` instances are resolved from whole-genome alignment MAF
-files, represented with the `MAF` class.
+3. these `Feature` instances are resolved from a pairwise or multiple 
+whole-genome alignment, represented with the `MAF` class.
 
 In general, we have analyses of the form:
 ```python
-from evopython import GTF
-from evopython import MAF
+from evopython import GTF, MAF
 
 genes = GTF("path/to/genes")
 wga = MAF("path/to/wga", aligned_on="species_name")
 
 for gene_name in genes:
     feat = genes[gene_name]['feat']
-    alignment = wga.get(feat)
+    alignments = wga.get(feat)
     
-    if len(alignment) == 1:
+    if len(alignments) == 1:
         # The alignment is contiguous; do something.
         pass
     else:
@@ -59,7 +58,7 @@ For specific usage examples, see the Jupyter notebooks in the **examples**
 directory.
 
 ## Documentation
-### class `evopython.GTF(gtf: str, types: list)`
+### class `evopython.GTF(gtf: str, types: tuple = tuple())`
 > A nested `dict` mapping gene name to feature name to a list of `Feature`
 > instances; each high-level gene `dict` has two additional keys, "attr" and 
 > "feat," with the former mapping to a `dict` with information such as 
@@ -68,7 +67,7 @@ directory.
 > 
 > *Arguments*:
 > - `gtf`: The GTF file path.
-> - `types`: The feature types to parse.
+> - `types`: The feature types to parse; gene features are parsed by default.
 ----
 ### class `evopython.BED(bed: str, on_name: bool = False)`
 > A `dict` mapping locus `tuple` or name value to `Feature` instance; in the 
@@ -154,15 +153,11 @@ naming scheme *chromosome_name.maf*.
 To test feature resolution,
 1. clone the repository with
 `git clone https://github.com/fiszbein-lab/evopython`,
-2. download the needed MAF files into their respective directories using the 
-provided FTP links; and
-3. run the test from the command line with `python -m unittest tests/test.py`.
-
-The test features have been pre-generated, but new features can be created
-with the `features.py` command-line script
-```pycon
-python features.py --maf path/to/maf --aligned-on species_name
-```
-where `--aligned-on` is the name of the species that the files are indexed on; 
-a text file, **features.txt**, will be written in the same directory as the 
-MAF file.
+2. download the MAF files into their respective directories using the 
+provided FTP links;
+3. generate random test features using the command-line script, 
+`python features.py --maf path/to/maf --aligned-on species_name`, where 
+`aligned_on` is the name of the species the file is indexed on 
+(or see `meta_data.csv`); and
+4. run the test from the command line with 
+`python -m unittest tests/test_resolution.py`.
