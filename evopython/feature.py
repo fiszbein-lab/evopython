@@ -77,28 +77,25 @@ class Feature:
         """
         if center in (5, 3):
             if self.is_forward:
-                if center == 5:
-                    start = self.start - pad5
-                    end = self.start + pad3
-                else:
-                    start = self.end - pad5
-                    end = self.end + pad3
+                anchor = self.start if center == 5 else self.end
+                start, end = anchor - pad5, anchor + pad3
             else:
-                if center == 5:
-                    start = self.end - pad3
-                    end = self.end + pad5
-                else:
-                    start = self.start - pad3
-                    end = self.start + pad5
+                anchor = self.start if center == 3 else self.end
+                start, end = anchor - pad3, anchor + pad5
+
         elif center == 0:
             if self.is_forward:
                 start = self.start - pad5
                 end = self.end + pad3
             else:
-                start = self.end - pad3
+                start = self.start - pad3
                 end = self.end + pad5
         else:
             raise ValueError(f"`center` must be 5, 3, or 0 — got {center}.")
+
+        # A negative position is invalid.
+        if start < 0:
+            start = 0
 
         return Feature(self.chrom, start, end, self.strand)
 

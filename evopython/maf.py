@@ -1,9 +1,8 @@
 import glob
 import os
 import re
+import subprocess
 import warnings
-
-from collections import defaultdict
 
 from Bio.SeqIO import SeqRecord
 from Bio.AlignIO import MafIO
@@ -51,11 +50,22 @@ class MAF:
             chrom, _ = os.path.basename(path).split(".", maxsplit=1)
 
             basename = f"{self._maf_dir}/{chrom}"
-            self._maf_index[chrom] = MafIO.MafIndex(
-                f"{basename}.mafindex",
-                f"{basename}.maf",
-                f"{self._aligned_on}.{chrom}"
-            )
+            try:
+                self._maf_index[chrom] = MafIO.MafIndex(
+                    f"{basename}.mafindex",
+                    f"{basename}.maf",
+                    f"{self._aligned_on}.{chrom}"
+                )
+            except ValueError:
+                warnings.warn(
+                    f"{path} could not be indexed; the record chromosome "
+                    f"names may not be \"{chrom}\" — skipping."
+                )
+                # A malformed index is created and must be deleted, otherwise
+                # `MafIndex.__check_existing_db` throws an error when a new MAF
+                #  object is initialized from the same files.
+                subprocess.call(f"rm {basename}.mafindex", shell=True)
+                continue
 
             # I peek at the MAF files to avoid asking for a genome index.
             with open(path, 'r') as f:
@@ -131,8 +141,8 @@ class MAF:
             # when both `match_strand` is True and the feature has a reverse-
             # stranded orientation.
             if match_strand and feat.is_reverse:
-                for species, (_, seq) in alignment.items():
-                    alignment[species] = _reverse_complement(seq)
+                for species, (species_feat, seq) in alignment.items():
+                    alignment[species] = species_feat, _reverse_complement(seq)
 
             alignments.append(alignment)
 
@@ -172,7 +182,7 @@ class MAF:
             1. https://genome.ucsc.edu/FAQ/FAQformat.html#format5
             2. http://genomewiki.ucsc.edu/index.php/Coordinate_Transforms
         """
-        overlap = defaultdict(dict)
+        overlap = dict()
 
         try:
             maf_index = self._maf_index[feat.chrom]

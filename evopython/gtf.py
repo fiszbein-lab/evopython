@@ -5,7 +5,7 @@ from evopython.feature import Feature
 
 
 class GTF(collections.UserDict):
-    def __init__(self, gtf: str, types: list = tuple()):
+    def __init__(self, gtf: str, types: tuple = tuple()):
         """Inits. GTF.
 
         Args:
@@ -16,7 +16,7 @@ class GTF(collections.UserDict):
         super().__init__(featurome)
 
 
-def _read_gtf(gtf: str, types: list) -> dict[str: dict]:
+def _read_gtf(gtf: str, types: tuple) -> dict[str: dict]:
     """Reads GTF.
 
     Args:
@@ -24,7 +24,7 @@ def _read_gtf(gtf: str, types: list) -> dict[str: dict]:
         types: The feature type/s to parse.
 
     Returns:
-        A nested dict mapping gene name to feature name to a list of `Feature`
+        A nested dict mapping gene name to feature name to a set of `Feature`
         instances; each high-level gene dict two additional keys, "attr" and
         "feat," with the former mapping to a dict with info. such as
         "gene_biotype" indicating whether the gene is protein-coding and the
@@ -45,7 +45,7 @@ def _read_gtf(gtf: str, types: list) -> dict[str: dict]:
 
             if type in types:
                 start, end = map(int, pos)
-                feat = Feature(chrom, start, end, strand)
+                feat = Feature(chrom, start-1, end, strand)  # 0- to 1-base.
 
                 gene_attr = _unpack_attr(attr)
                 if 'gene_name' in gene_attr:
@@ -55,7 +55,7 @@ def _read_gtf(gtf: str, types: list) -> dict[str: dict]:
 
                 if gene not in featurome:
                     featurome[gene] = {
-                        type: list() for type in types if type != "gene"}
+                        type: set() for type in types if type != "gene"}
 
                     featurome[gene]['attr'] = gene_attr
                     featurome[gene]['feat'] = feat
@@ -63,7 +63,7 @@ def _read_gtf(gtf: str, types: list) -> dict[str: dict]:
                 if type == "gene":
                     featurome[gene][feat] = feat
                 else:
-                    featurome[gene][feat].append(feat)
+                    featurome[gene][type].add(feat)
 
     return featurome
 
