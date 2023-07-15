@@ -49,10 +49,9 @@ for gene_name in genes:
         # The alignment is discontiguous; do something else.
         pass
 ```
-We can parse any feature type in the GTF (see the `GTF` class description 
+We can parse any feature type in the GTF (see the `GTF` description 
 below) and further generate derived, secondary features with the `Feature` 
-class's pad method (see the `Feature` class description below), placing minimal
-constraints on the features we can query alignments for.
+class's pad method (see the `Feature` description below).
 
 For specific usage examples, see the Jupyter notebooks in the **examples** 
 directory.
@@ -60,10 +59,10 @@ directory.
 ## Documentation
 ### class `evopython.GTF(gtf: str, types: tuple = tuple())`
 > A nested `dict` mapping gene name to feature name to a list of `Feature`
-> instances; each high-level gene `dict` has two additional keys, "attr" and 
-> "feat," with the former mapping to a `dict` with information such as 
-> "gene_biotype" indicating whether the gene is protein-coding and the latter 
-> mapping to the gene's `Feature` instance.
+> instances; each high-level gene `dict` has two additional keys, `attr` and 
+> `feat`, with the former mapping to a `dict` with annotated information such 
+> as "gene_biotype" indicating whether the gene is protein-coding and the 
+> latter mapping to the gene's `Feature` instance.
 > 
 > *Arguments*:
 > - `gtf`: The GTF file path.
@@ -108,6 +107,8 @@ used as keys to the features.
 > ----
 > `pad(self, pad5: int, pad3: int, center: int = 0)`
 > 
+> Pads the feature.
+> 
 > Positive padding is tanatamount to feature extension and negative 
 > padding to feature shrinkage; with centering, both can be used to 
 > derive features that do not overlap the source feature.
@@ -143,10 +144,9 @@ naming scheme *chromosome_name.maf*.
 > feature's strand; if `False`, the alignment is mapped to the forward strand.
 >
 > *Returns:*
-> - A list of dictionaries mapping species to `tuple`, where `tuple[0]` is the 
-> chromosome name; `tuple[1]` the 0-based, inclusive starting coordinate; 
-> `tuple[2]` the 0-based, exclusive ending coordinate; `tuple[3]` the strand, 
-> plus or minus for forward or reverse; and `tuple[4]` the alignment.
+> - A `list` of `dicts` mapping species to `tuple`, where `tuple[0]` is a 
+> `Feature` instance describing the alignment's position and `tuple[1]` the 
+> aligned sequence.
 
 ## Testing
 
@@ -158,6 +158,6 @@ provided FTP links;
 3. generate random test features using the command-line script, 
 `python features.py --maf path/to/maf --aligned-on species_name`, where 
 `aligned_on` is the name of the species the file is indexed on 
-(or see `meta_data.csv`); and
+(see `meta_data.csv`); and
 4. run the test from the command line with 
 `python -m unittest tests/test_resolution.py`.
